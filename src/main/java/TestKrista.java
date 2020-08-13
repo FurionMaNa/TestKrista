@@ -97,7 +97,6 @@ public class TestKrista {
                                         }
                                     }
                                 }
-                                //System.out.println("COMMON " + fCatPlantsClass.common + " BOTANICAL " + fCatPlantsClass.botanical + " ZONE " + fCatPlantsClass.zone + " LIGHT " + fCatPlantsClass.light + " PRICE " + fCatPlantsClass.price + " AVAILABILITY " + fCatPlantsClass.availability);
                                 statement.execute(addFCatPlants(fCatPlantsClass));
                             }
                         }
@@ -108,7 +107,7 @@ public class TestKrista {
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
-                        System.out.println("В файле ...." + e.getMessage());//Добавить имя файла
+                        System.out.println("В файле "+path.get(k)+" " + e.getMessage());//Добавить имя файла
                     }
                 }
             } catch (SQLException throwables) {
@@ -123,7 +122,7 @@ public class TestKrista {
         } else {
             System.out.println("Error connect");
         }
-
+        System.out.println("Данные помещены в БД!");
 
     }
 
