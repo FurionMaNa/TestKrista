@@ -3,14 +3,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TestKrista {
 
@@ -20,19 +19,15 @@ public class TestKrista {
 
     private static String addFCatPlants(FCatPlantsClass catPlan){
         return "insert into f_cat_plants (availability, botanical, catalog_id, common, light, price, zone) " +
-                "values ("+catPlan.availability+" , '"+catPlan.botanical+"' , "+catPlan.catalogId+" , '"+catPlan.common+"' , '"+catPlan.light+"' , "+catPlan.price+" , " + catPlan.zone+" );";
+               "values ("+catPlan.availability+" , '"+catPlan.botanical+"' , "+catPlan.catalogId+" , '"+catPlan.common+"' , '"+catPlan.light+"' , "+catPlan.price+" , " + catPlan.zone+" );";
     }
 
     private static String addDCatCatalog(String delivery_date,String company,String uuid){
         return "insert into d_cat_catalog (company, delivery_date, uuid) " +
-                "values ('"+company+"', '"+delivery_date+"','"+uuid+"');";
+               "values ('"+company+"', '"+delivery_date+"','"+uuid+"');";
     }
 
     public static void main(String[] args) {
-        if(args.length==0){
-            System.out.println("Вы не указали не одного файла для парсинга!!!");
-            return;
-        }
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -47,9 +42,45 @@ public class TestKrista {
             e.printStackTrace();
             return;
         }
+        if(args.length==0){
+            ArrayList<String> path=new ArrayList<>();
+            int anotherFile=0;
+            do {
+                System.out.print("Введи путь к файлу: ");
+                int inChar;
+                String s = "";
+                try {
+                    inChar = System.in.read();
+                    while (System.in.available() > 0) {
+                        s += (char) inChar;
+                        inChar = System.in.read();
+                    }
+                } catch (IOException e) {
+                    System.out.println("Ошибка");
+                }
+                boolean f=true;
+                for(int i=0;i<path.size();i++){
+                    if(path.get(i).equals(s)){
+                        System.out.println("Такой файл уже есть!!!");
+                        f=false;
+                    }
+                }
+                if(f) {
+                    path.add(s);
+                }
+                System.out.print("Хотите указать ещё один файл?(0-да;1-нет): ");
+                Scanner in = new Scanner(System.in);
+                anotherFile = in.nextInt();
+            }while(anotherFile==0);
+            args=new String[path.size()];
+            for(int i=0;i<path.size();i++){
+                args[i]=path.get(i);
+            }
+        }
         if (connection != null) {
             try {
                 Statement statement = connection.createStatement();
+                statement.execute("DELETE FROM f_cat_plants; DELETE FROM d_cat_catalog;");
                 for (int k = 0; k < args.length; k++) {
                     try {
                         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -123,9 +154,7 @@ public class TestKrista {
                         e.printStackTrace();
                     } catch (IOException e) {
                         System.out.println(e.toString());
-                    } //catch (Exception e) {
-                        //System.out.println("В файле " + args[k] + " " + e.getMessage());
-                   // }
+                    }
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();

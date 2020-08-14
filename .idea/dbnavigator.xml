@@ -23,11 +23,17 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="3145e687-b69c-4d26-bd10-5c9fafd50339">
+        <schema name="public" object-types="sequence, view, constraint, dataset trigger, table, index, column, function" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3145e687-b69c-4d26-bd10-5c9fafd50339">
-      <console name="plant" type="STANDARD" schema="information_schema" session="Main" />
+      <console name="plant" type="STANDARD" schema="information_schema" session="Main">delete from &quot;public&quot;.f_cat_plants
+delete from &quot;public&quot;.d_cat_catalog
+select * from &quot;public&quot;.d_cat_catalog</console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
