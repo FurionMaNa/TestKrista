@@ -87,7 +87,12 @@ public class TestKrista {
                         Document doc = documentBuilder.parse(args[k]);
                         Element root = doc.getDocumentElement();
                         try {
-                            statement.execute(addDCatCatalog(root.getAttribute("date"), root.getAttribute("company"), root.getAttribute("uuid")));
+                            ResultSet resultSet = statement.executeQuery("Select count(id) as \"count_id\" from d_cat_catalog where ((uuid='" + root.getAttribute("uuid") + "')and(company='"+root.getAttribute("company")+"')and(delivery_date='"+root.getAttribute("date")+"'));");
+                            if (resultSet.next()) {
+                                if(resultSet.getInt("count_id")==0){
+                                    statement.execute(addDCatCatalog(root.getAttribute("date"), root.getAttribute("company"), root.getAttribute("uuid")));
+                                }
+                            }
                         }catch (Exception e) {
                             System.out.println("В файле " + args[k] + " " + e.getMessage());
                             continue;
@@ -98,7 +103,7 @@ public class TestKrista {
                             if (plant.getNodeType() != Node.TEXT_NODE) {
                                 NodeList plantProps = plant.getChildNodes();
                                 FCatPlantsClass fCatPlantsClass = new FCatPlantsClass();
-                                ResultSet resultSet = statement.executeQuery("Select id from d_cat_catalog where (uuid='" + root.getAttribute("uuid") + "');");
+                                ResultSet resultSet = statement.executeQuery("Select id from d_cat_catalog where ((uuid='" + root.getAttribute("uuid") + "')and(company='"+root.getAttribute("company")+"')and(delivery_date='"+root.getAttribute("date")+"'));");
                                 if (resultSet.next()) {
                                     fCatPlantsClass.catalogId = resultSet.getInt("id");
                                 }

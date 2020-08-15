@@ -25,7 +25,8 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="3145e687-b69c-4d26-bd10-5c9fafd50339">
-        <schema name="public" object-types="sequence, view, constraint, dataset trigger, table, index, column, function" />
+        <schema name="pg_catalog" object-types="function" />
+        <schema name="public" object-types="constraint, view, index, column, dataset trigger, table, sequence, function" />
       </connection>
     </loaded-nodes>
   </component>
@@ -43,6 +44,7 @@ select * from &quot;public&quot;.d_cat_catalog</console>
     <connection id="3145e687-b69c-4d26-bd10-5c9fafd50339" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="3145e687-b69c-4d26-bd10-5c9fafd50339" dataset="public.f_cat_plants" active-filter-id="" />
     <filter-actions connection-id="3145e687-b69c-4d26-bd10-5c9fafd50339" dataset="public.d_cat_catalog" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
