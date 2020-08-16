@@ -88,7 +88,7 @@ public class TestKrista {
                         Element root = doc.getDocumentElement();
                         FCatPlantsClass fCatPlantsClass = new FCatPlantsClass();
                         try {
-                            ResultSet resultSet = statement.executeQuery("Select count(id) as \"count_id\" from d_cat_catalog where ((uuid='" + root.getAttribute("uuid") + "')and(company='"+root.getAttribute("company")+"')and(delivery_date='"+root.getAttribute("date")+"'));");
+                            ResultSet resultSet = statement.executeQuery("Select count(id) as \"count_id\" from d_cat_catalog where ((uuid='" + root.getAttribute("uuid") + "')and(company='"+root.getAttribute("company")+"')and(delivery_date='"+root.getAttribute("date")+"'));");//Проверка на повтор
                             if (resultSet.next()) {
                                 if(resultSet.getInt("count_id")==0){
                                     statement.execute(addDCatCatalog(root.getAttribute("date"), root.getAttribute("company"), root.getAttribute("uuid")));
