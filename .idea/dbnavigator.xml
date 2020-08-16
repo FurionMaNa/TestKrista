@@ -23,18 +23,13 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="3145e687-b69c-4d26-bd10-5c9fafd50339">
-        <schema name="pg_catalog" object-types="function" />
-        <schema name="public" object-types="constraint, view, index, column, dataset trigger, table, sequence, function" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3145e687-b69c-4d26-bd10-5c9fafd50339">
-      <console name="plant" type="STANDARD" schema="information_schema" session="Main">delete from &quot;public&quot;.f_cat_plants
-delete from &quot;public&quot;.d_cat_catalog
-select * from &quot;public&quot;.d_cat_catalog</console>
+      <console name="plant" type="STANDARD" schema="information_schema" session="Main"><![CDATA[delete from "public".f_cat_plants
+delete from "public".d_cat_catalog
+select * from "public".d_cat_catalog]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

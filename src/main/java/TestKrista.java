@@ -42,7 +42,7 @@ public class TestKrista {
             e.printStackTrace();
             return;
         }
-        if(args.length==0){
+        if(args.length==0){//Проверка на переданные параметры с адресами файлов, если не переданы, то запрашиваем на ввод
             ArrayList<String> path=new ArrayList<>();
             int anotherFile=0;
             do {
@@ -80,18 +80,23 @@ public class TestKrista {
         if (connection != null) {
             try {
                 Statement statement = connection.createStatement();
-                statement.execute("DELETE FROM f_cat_plants; DELETE FROM d_cat_catalog;");
+                statement.execute("DELETE FROM f_cat_plants; DELETE FROM d_cat_catalog;");//Очищаем таблицы
                 for (int k = 0; k < args.length; k++) {
                     try {
                         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                         Document doc = documentBuilder.parse(args[k]);
                         Element root = doc.getDocumentElement();
+                        FCatPlantsClass fCatPlantsClass = new FCatPlantsClass();
                         try {
                             ResultSet resultSet = statement.executeQuery("Select count(id) as \"count_id\" from d_cat_catalog where ((uuid='" + root.getAttribute("uuid") + "')and(company='"+root.getAttribute("company")+"')and(delivery_date='"+root.getAttribute("date")+"'));");
                             if (resultSet.next()) {
                                 if(resultSet.getInt("count_id")==0){
                                     statement.execute(addDCatCatalog(root.getAttribute("date"), root.getAttribute("company"), root.getAttribute("uuid")));
                                 }
+                            }
+                            resultSet = statement.executeQuery("Select id from d_cat_catalog where ((uuid='" + root.getAttribute("uuid") + "')and(company='"+root.getAttribute("company")+"')and(delivery_date='"+root.getAttribute("date")+"'));");//Определение Id записи
+                            if (resultSet.next()) {
+                                fCatPlantsClass.catalogId = resultSet.getInt("id");
                             }
                         }catch (Exception e) {
                             System.out.println("В файле " + args[k] + " " + e.getMessage());
@@ -102,11 +107,6 @@ public class TestKrista {
                             Node plant = catalog.item(i);
                             if (plant.getNodeType() != Node.TEXT_NODE) {
                                 NodeList plantProps = plant.getChildNodes();
-                                FCatPlantsClass fCatPlantsClass = new FCatPlantsClass();
-                                ResultSet resultSet = statement.executeQuery("Select id from d_cat_catalog where ((uuid='" + root.getAttribute("uuid") + "')and(company='"+root.getAttribute("company")+"')and(delivery_date='"+root.getAttribute("date")+"'));");
-                                if (resultSet.next()) {
-                                    fCatPlantsClass.catalogId = resultSet.getInt("id");
-                                }
                                 boolean error=false;
                                 for (int j = 0; j < plantProps.getLength(); j++) {
                                     try {
@@ -156,7 +156,7 @@ public class TestKrista {
                     } catch (ParserConfigurationException e) {
                         e.printStackTrace();
                     } catch (SAXException e) {
-                        e.printStackTrace();
+                        System.out.println("Проблема с файлом, убедитесь что ввели путь правильно!");
                     } catch (IOException e) {
                         System.out.println(e.toString());
                     }
@@ -172,8 +172,9 @@ public class TestKrista {
             }
         } else {
             System.out.println("Error connect");
+            return;
         }
-        System.out.println("Данные помещены в БД!");
+        System.out.println("Выполнение завершено!");
 
     }
 
